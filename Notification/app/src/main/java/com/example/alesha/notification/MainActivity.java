@@ -10,6 +10,8 @@ public class MainActivity extends AppCompatActivity {
 
     private Button addB;
     private Button showB;
+    private Button infoB;
+    private Button appinfoB;
 
 
     @Override
@@ -19,7 +21,8 @@ public class MainActivity extends AppCompatActivity {
 
         addB = (Button) findViewById(R.id.add);
         showB = (Button) findViewById(R.id.show);
-
+        infoB = (Button) findViewById(R.id.info);
+        appinfoB = (Button) findViewById(R.id.appInfo);
 
         addB.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -34,6 +37,22 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intentShow = new Intent(MainActivity.this, ShowActivity.class);
                 startActivity(intentShow);
+            }
+        });
+
+        infoB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intentAdd = new Intent(MainActivity.this, InfoActivity.class);
+                startActivity(intentAdd);
+            }
+        });
+
+        appinfoB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intentAdd = new Intent(MainActivity.this, AppInfoActivity.class);
+                startActivity(intentAdd);
             }
         });
     }

@@ -21,13 +21,15 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String YEAR_COLUMN = "god";
     public static final String MIN_COLUMN = "min";
     public static final String HOUR_COLUMN = "chas";
+    public static final String MILLISECONDS = "ms";
+
 
     //создаю бд
     private static final String DB_CREATE = "create table "
             + DB_TABLE + "(" + ID_COLUMN
             + " integer primary key autoincrement," +  NAME_COLUMN + " text not null," + TEXT_COLUMN + " text not null,"
             + DAY_COLUMN + " long," + MONTH_COLUMN + " long," + YEAR_COLUMN + " long,"
-            + HOUR_COLUMN + " long, " + MIN_COLUMN + " long);";
+            + HOUR_COLUMN + " long, " + MIN_COLUMN + " long, " + MILLISECONDS + " long);";
 
 
     //тут конструктор

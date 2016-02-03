@@ -45,10 +45,10 @@ public class ShowActivity extends AppCompatActivity {
         lvMain = (ListView) findViewById(R.id.lvMain);
 
         //получаю бд отсортированную по возрастанию
-        Cursor cr = sqLDB.query(DBHelper.DB_TABLE, null, null, null, null, null, "god, mes, den, chas, min" );
+        Cursor cr = sqLDB.query(DBHelper.DB_TABLE, null, null, null, null, null, null );
 
-        sCa = new SimpleCursorAdapter(this, R.layout.item, cr, new String[] {DBHelper.NAME_COLUMN, DBHelper.DAY_COLUMN, DBHelper.MONTH_COLUMN, DBHelper.YEAR_COLUMN, DBHelper.HOUR_COLUMN, DBHelper.MIN_COLUMN},
-                new int[] {R.id.text1, R.id.text2, R.id.text3, R.id.text4, R.id.text5, R.id.text6});
+        sCa = new SimpleCursorAdapter(this, R.layout.item, cr, new String[] {DBHelper.NAME_COLUMN},
+                new int[] {R.id.text1});
 
         lvMain.setAdapter(sCa);
         lvMain.setOnItemClickListener(new AdapterView.OnItemClickListener() {

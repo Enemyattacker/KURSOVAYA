@@ -19,11 +19,34 @@
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"></LinearLayout>
-
+        android:layout_height="wrap_content">
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="ПОКАЗАТЬ"
         android:id="@+id/show" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Информация о нас"
+            android:id="@+id/info" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Информация о приложении"
+            android:id="@+id/appInfo" />
+    </LinearLayout>
+
 </LinearLayout>

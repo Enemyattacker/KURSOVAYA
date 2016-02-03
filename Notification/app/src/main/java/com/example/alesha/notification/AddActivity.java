@@ -25,8 +25,7 @@ public class AddActivity extends AppCompatActivity {
     final int DIALOG_TIME = 1;
     final int DIALOG_DATE = 2;
     int myYear, myMonth, myDay, myMinute, myHour;
-    long  myMS, finalMS;
-    public TextView timeView, dateView, dateTView;
+    public TextView  dateView, dateTView;
     public EditText editText, nameText;
     public Button button;
     String dateE, timeE;
@@ -41,7 +40,6 @@ public class AddActivity extends AppCompatActivity {
         db= new DBHelper(this);
         sQDB = db.getReadableDatabase();
 
-        timeView = (TextView) findViewById(R.id.timeView);
         dateView = (TextView) findViewById(R.id.dateView);
         dateTView = (TextView) findViewById(R.id.dateTView);
         editText = (EditText) findViewById(R.id.editText);
@@ -68,6 +66,8 @@ public class AddActivity extends AppCompatActivity {
         myMinute = c.get(Calendar.MINUTE);
 
 
+
+
         button = (Button) findViewById(R.id.button);
 
 
@@ -82,9 +82,8 @@ public class AddActivity extends AppCompatActivity {
                 cv.put(DBHelper.YEAR_COLUMN, myYear);
                 cv.put(DBHelper.HOUR_COLUMN, myHour);
                 cv.put(DBHelper.MIN_COLUMN, myMinute);
+                cv.put(DBHelper.MILLISECONDS, c.get(Calendar.SECOND));
                 sQDB.insert(DBHelper.DB_TABLE, null, cv);
-                timeView.setText(dateE + " " + timeE);
-
                 db.close();
                 finish();
             }
@@ -123,6 +122,7 @@ public class AddActivity extends AppCompatActivity {
             myHour = hourOfDay;
             myMinute = minute;
             timeE = pad(myHour) + " : " + pad(myMinute);
+            dateView.setText(dateE + " " + timeE);
         }
     };
 

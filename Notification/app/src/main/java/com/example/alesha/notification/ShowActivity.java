@@ -19,15 +19,10 @@ import java.util.List;
 
 public class ShowActivity extends AppCompatActivity {
 
-    //объект для создания и управления бд
     DBHelper db;
-    //список
     ListView lvMain;
 
-    long myMS;
-    //объект для подключения
     SQLiteDatabase sqLDB;
-    //адаптер для вывода в список
     SimpleCursorAdapter sCa;
     public static final String KEY_ID = "id_position";
 
@@ -44,7 +39,6 @@ public class ShowActivity extends AppCompatActivity {
 
         lvMain = (ListView) findViewById(R.id.lvMain);
 
-        //получаю бд отсортированную по возрастанию
         Cursor cr = sqLDB.query(DBHelper.DB_TABLE, null, null, null, null, null, null );
 
         sCa = new SimpleCursorAdapter(this, R.layout.item, cr, new String[] {DBHelper.NAME_COLUMN},
@@ -57,6 +51,14 @@ public class ShowActivity extends AppCompatActivity {
                 Intent intent = new Intent(ShowActivity.this, FullActivity.class);
                 intent.putExtra(KEY_ID, position);
                 startActivity(intent);
+            }
+        });
+
+        lvMain.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                sqLDB.delete(DBHelper.DB_TABLE, "_id = " + position+1, null);
+                return false;
             }
         });
 

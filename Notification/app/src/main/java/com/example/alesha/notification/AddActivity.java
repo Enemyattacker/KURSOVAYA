@@ -46,17 +46,6 @@ public class AddActivity extends AppCompatActivity {
         nameText = (EditText) findViewById(R.id.nameText);
 
 
-        /*SimpleDateFormat sdfY = new SimpleDateFormat("yyyy"),
-                sdfM = new SimpleDateFormat("MM"),
-                sdfD = new SimpleDateFormat("dd"),
-                sdfH = new SimpleDateFormat("HH"),
-                sdfMin = new SimpleDateFormat("mm");
-        myYear = Integer.parseInt(sdfY.format(date));
-        myMonth = Integer.parseInt(sdfM.format(date));
-        myDay = Integer.parseInt(sdfD.format(date));
-        myHour = Integer.parseInt(sdfH.format(date));
-        myMinute = Integer.parseInt(sdfMin.format(date));
-        */
 
         final Calendar c = Calendar.getInstance();
         myYear = c.get(Calendar.YEAR);

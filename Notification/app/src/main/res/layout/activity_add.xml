@@ -21,7 +21,7 @@
             android:layout_height="85dp"
             android:id="@+id/nameTView"
             android:layout_weight="1"
-            android:text="Текст напоминания" />
+            android:text="Заголовок напоминания" />
 
         <EditText
             android:layout_width="wrap_content"
@@ -48,14 +48,14 @@
             android:layout_height="wrap_content"
             android:id="@+id/dateTView"
             android:layout_weight="1"
-            android:text="ДАТА и время" />
+            android:text="Дата наступления" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/dateView"
             android:layout_weight="1"
-            android:text="клик сюда"
+            android:text="Нажмите, чтобы выбрать"
             android:clickable="true"
             android:onClick="startDate"/>
 
@@ -87,7 +87,7 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Поехали"
+        android:text="Добавить"
         android:id="@+id/button"
         android:layout_gravity="center_horizontal" />
 

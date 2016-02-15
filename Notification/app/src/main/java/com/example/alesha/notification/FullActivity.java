@@ -16,9 +16,15 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import android.os.Bundle;
+import android.os.CountDownTimer;
+import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.Chronometer;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.Calendar;
 
@@ -30,14 +36,11 @@ public class FullActivity extends AppCompatActivity {
     public NotificationManager notificationManager;
     public Notification notify;
     public Context context;
-    //объект для подключения
     SQLiteDatabase sqLDB;
     public Calendar c2;
     int id;
-    private Timer myTimer;
-    private TimerTask myTimerTask;
-    TextView textName, textText, tiem;
-    String TAG = "myTag";
+    TextView textName, textText, tiem, kek;
+
 
 
     @Override
@@ -47,28 +50,16 @@ public class FullActivity extends AppCompatActivity {
         setContentView(R.layout.activity_full);
 
         db = new DBHelper(this);
-        sqLDB = db.getReadableDatabase()        ;
+        sqLDB = db.getReadableDatabase();
         Intent intent = getIntent();
 
         id = intent.getIntExtra(ShowActivity.KEY_ID, 0) + 1;
 
-        Log.d(TAG, String.valueOf(id));
 
-
-
-
-        if (myTimer != null)
-            myTimer.cancel();
-
-        myTimer = new Timer();
-        myTimerTask = new MyTimerTask();
-
-        myTimer.schedule(myTimerTask, 1000, 1000);
-
-
-        textName= (TextView) findViewById(R.id.textName);
-        textText= (TextView) findViewById(R.id.textText);
+        textName = (TextView) findViewById(R.id.textName);
+        textText = (TextView) findViewById(R.id.textText);
         tiem = (TextView) findViewById(R.id.tiem);
+        kek = (TextView) findViewById(R.id.kek);
 
 
         Cursor cr = sqLDB.query(DBHelper.DB_TABLE, null, DBHelper.ID_COLUMN + " = ?", new String[]{String.valueOf(id)}, null, null, null);
@@ -84,56 +75,60 @@ public class FullActivity extends AppCompatActivity {
         textName.setText("Напоминание");
         textText.setText(cr.getString(textik));
 
-        c2 = new GregorianCalendar(god, mes, day, hou, min, sec );
+        c2 = new GregorianCalendar(god, mes, day, hou, min, sec);
+        final Calendar c = new GregorianCalendar(TimeZone.getTimeZone("GMT + 3"));
+
+        long finalMillisec = c2.getTimeInMillis() - c.getTimeInMillis();
+
+        kek.setText("Дата наступления " + day + "/" + mes + "/" + god + " " + hou + ":" + min);
+
+        new CountDownTimer(finalMillisec, 1000) {
+            public void onTick(long millsUntilFinished) {
+                int daysNumber, hoursNumber, minsNumber, secsNumber;
+                daysNumber = (int) Math.floor(millsUntilFinished/1000);
+                secsNumber = daysNumber%60;
+                daysNumber = (int) Math.floor(daysNumber/60);
+                minsNumber = daysNumber%60;
+                daysNumber = (int) Math.floor(daysNumber/60);
+                hoursNumber = daysNumber%24;
+                daysNumber = (int) Math.floor(daysNumber/24);
+                tiem.setText("Осталось " + daysNumber + " дней " + hoursNumber + " часов " + minsNumber + " минут " + secsNumber + " секунд");
+            }
+
+            public void onFinish() {
+                tiem.setText("Дата наступила");
+                context = getApplicationContext();
+
+                Intent notificationIntent = new Intent(context, ShowActivity.class);
+                PendingIntent contentIntent = PendingIntent.getActivity(context,
+                        0, notificationIntent,
+                        PendingIntent.FLAG_CANCEL_CURRENT);
+
+                Notification.Builder builder = new Notification.Builder(context);
+
+                builder.setContentIntent(contentIntent)
+                        .setSmallIcon(R.drawable.ic_launcher)
+                        .setTicker("У вас напоминание")
+                        .setAutoCancel(true)
+                        .setContentTitle("Время напоминания пришло")
+                        .setContentText("Нажмите, чтобы проверить");
+
+                notify = builder.getNotification();
+
+                notificationManager = (NotificationManager) context
+                        .getSystemService(Context.NOTIFICATION_SERVICE);
+
+                notificationManager.notify(NOTIFY_ID, notify);
+
+
+            }
+        }.start();
 
         cr.close();
+
+
         db.close();
-
-
     }
 
-    class MyTimerTask extends TimerTask {
-        public void run() {
-            final Calendar c = new GregorianCalendar(TimeZone.getTimeZone("GMT + 3"));
-            final Calendar dis = new GregorianCalendar(TimeZone.getTimeZone("GMT + 3"));
 
-            dis.setTime(new Date(c2.getTime().getTime() - c.getTime().getTime()));
-
-
-            runOnUiThread(new Runnable() {
-
-                @Override
-                public void run() {
-                    tiem.setText((dis.get(Calendar.DAY_OF_YEAR) - 1)+ " дней "  + (dis.get(Calendar.HOUR_OF_DAY)) + " часов" + (dis.get(Calendar.MINUTE) + " минут" + (dis.get(Calendar.SECOND) + " секунд ")));
-                    if((dis.get(Calendar.DAY_OF_YEAR))==0&&(dis.get(Calendar.HOUR_OF_DAY))==0&&(dis.get(Calendar.MINUTE))==0&&(dis.get(Calendar.SECOND))==0){
-                        myTimerTask.cancel();
-                        myTimer.cancel();
-                        context = getApplicationContext();
-
-                        Intent notificationIntent = new Intent(context, MainActivity.class);
-                        PendingIntent contentIntent = PendingIntent.getActivity(context,
-                                0, notificationIntent,
-                                PendingIntent.FLAG_CANCEL_CURRENT);
-
-                        Notification.Builder builder = new Notification.Builder(context);
-
-                        builder.setContentIntent(contentIntent)
-                                .setSmallIcon(R.drawable.ic_launcher)
-                                .setTicker("У вас напоминание")
-                                .setWhen(c2.getTimeInMillis())
-                                .setAutoCancel(true)
-                                .setContentTitle("Время напоминание пришло")
-                                .setContentText("Нажмите, чтобы проверить");
-
-                        notify = builder.build();
-
-                        notificationManager = (NotificationManager) context
-                                .getSystemService(Context.NOTIFICATION_SERVICE);
-
-                        notificationManager.notify(NOTIFY_ID, notify);
-                    }
-                }
-            });
-        }
-    }
 }
